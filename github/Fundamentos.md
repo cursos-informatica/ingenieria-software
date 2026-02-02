@@ -15,13 +15,13 @@ Se activa cuando se abre, actualiza o cierra un PR. Ideal para validar código a
 
 Es el evento más versátil para flujos de trabajo en equipo.
 
-__labeled:__ Se dispara justo cuando añades una etiqueta (label) al PR.
+- __labeled:__ Se dispara justo cuando añades una etiqueta (label) al PR.
 
-__unlabeled:__ Cuando quitas una etiqueta.
+- __unlabeled:__ Cuando quitas una etiqueta.
 
-__opened:__ Cuando se crea el PR por primera vez.
+- __opened:__ Cuando se crea el PR por primera vez.
 
-__synchronize:__ Cuando subes nuevos commits a la rama del PR (muy usado para re-ejecutar tests).
+- __synchronize:__ Cuando subes nuevos commits a la rama del PR (muy usado para re-ejecutar tests).
 
 closed: Cuando se cierra el PR (puedes verificar si fue por un merge o simplemente cerrado).
 
@@ -69,13 +69,13 @@ Cuando se abre, edita o cierra un issue.
 
 Ideal para automatizar la gestión de proyectos y bots.
 
-__opened:__ Cuando un usuario reporta un bug o sugiere algo.
+- __opened:__ Cuando un usuario reporta un bug o sugiere algo.
 
-__labeled:__ Cuando etiquetas un issue (ej. para moverlo automáticamente en un tablero).
+- __labeled:__ Cuando etiquetas un issue (ej. para moverlo automáticamente en un tablero).
 
-__assigned / unassigned:__ Cuando asignas a alguien para resolverlo.
+- __assigned / unassigned:__ Cuando asignas a alguien para resolverlo.
 
-__deleted:__ Si un administrador borra el issue.
+- __deleted:__ Si un administrador borra el issue.
 
 __issue_comment:__ 
 
@@ -87,11 +87,11 @@ Cuando publicas una nueva versión (release) de tu software.
 
 Se usa para la etapa final del despliegue.
 
-__published:__ Cuando la versión es pública (ideal para subir el código a producción).
+- __published:__ Cuando la versión es pública (ideal para subir el código a producción).
 
-__created:__ Cuando se guarda el borrador del release.
+- __created:__ Cuando se guarda el borrador del release.
 
-__prereleased:__ Cuando marcas una versión como "Beta" o "Alpha".
+- __prereleased:__ Cuando marcas una versión como "Beta" o "Alpha".
 
 __watch:__ 
 
@@ -101,8 +101,8 @@ __registry_package__
 
 Relacionado con GitHub Packages (Docker, npm, etc.).
 
-__published:__ Cuando una nueva versión de un paquete o imagen de Docker se sube con éxito.
+- __published:__ Cuando una nueva versión de un paquete o imagen de Docker se sube con éxito.
 
-__updated:__ Cuando se actualiza una versión existente.
+- __updated:__ Cuando se actualiza una versión existente.
 
 ## Variables
