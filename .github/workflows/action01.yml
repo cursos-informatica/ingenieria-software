@@ -1,0 +1,53 @@
+name: Demo CI/CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:                         # 🔹 INPUT: parámetro externo
+        description: "Entorno de despliegue"
+        required: true
+        default: "dev"
+
+env:
+  APP_NAME: mi-app                         # 🔹 ENV global (workflow)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.set_version.outputs.version }}
+      # 🔹 OUTPUT (job): expone la versión hacia otros jobs
+
+    steps:
+      - name: Calcular versión
+        id: set_version
+        run: |
+          VERSION="1.0.${{ github.run_number }}"
+
+          # 🔹 GITHUB_ENV:
+          # Hace disponible VERSION para los siguientes steps
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+          # 🔹 GITHUB_OUTPUT:
+          # Permite que este valor pueda salir del job
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Usar variable dentro del mismo job
+        run: |
+          # 🔹 Uso de variable creada con GITHUB_ENV
+          echo "Building $APP_NAME version $VERSION"
+          echo "Environment: ${{ inputs.environment }}"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build                           # 🔹 NEEDS: depende del job build
+
+    steps:
+      - name: Deploy
+        run: |
+          # 🔹 NO funciona $VERSION aquí (porque era GITHUB_ENV del job build)
+
+          # 🔹 Se usa el output expuesto por el job build
+          echo "Deploying version ${{ needs.build.outputs.version }}"
+          echo "To environment: ${{ inputs.environment }}"
