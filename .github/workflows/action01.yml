@@ -23,20 +23,20 @@ jobs:
       - name: Calcular versión
         id: set_version
         run: |
-          VERSION="1.0.${{ github.run_number }}"
+          version="1.0.${{ github.run_number }}"
 
           # 🔹 GITHUB_ENV:
           # Hace disponible VERSION para los siguientes steps
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION_ENV=$version" >> $GITHUB_ENV
 
           # 🔹 GITHUB_OUTPUT:
           # Permite que este valor pueda salir del job
-          echo "VERSION_OUTPUT=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION_OUTPUT=$version" >> $GITHUB_OUTPUT
 
       - name: Usar variable dentro del mismo job
         run: |
           # 🔹 Uso de variable creada con GITHUB_ENV
-          echo "Building $APP_NAME version $VERSION"
+          echo "Building $APP_NAME version $VERSION_ENV"
           echo "Environment: ${{ inputs.environment }}"
 
   deploy:
@@ -46,8 +46,8 @@ jobs:
     steps:
       - name: Deploy
         run: |
-          # 🔹 NO funciona $VERSION aquí (porque era GITHUB_ENV del job build)
+          # 🔹 NO funciona $VERSION_ENV aquí (porque era GITHUB_ENV del job build)
 
           # 🔹 Se usa el output expuesto por el job build
-          echo "Deploying version ${{ needs.build.outputs.version }}"
+          echo "Deploying version ${{ needs.build.outputs.VERSION_OUTPUT }}"
           echo "To environment: ${{ inputs.environment }}"
