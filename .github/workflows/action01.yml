@@ -3,21 +3,20 @@ name: Demo CI/CD
 on:
   workflow_dispatch:
     inputs:
-      environment:                         # 🔹 INPUT: parámetro externo
+      environment:
         description: "Entorno de despliegue"
         required: true
         default: "dev"
 
 env:
-  APP_NAME: mi-app                         # 🔹 ENV global (workflow)
+  APP_NAME: mi-app
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     outputs:
-      VERSION_OUTPUT: ${{ steps.set_version.outputs.version }}
-      # 🔹 OUTPUT (job): expone la versión hacia otros jobs
+      VERSION_OUTPUT: ${{ steps.set_version.outputs.VERSION_OUTPUT }}
 
     steps:
       - name: Calcular versión
@@ -25,29 +24,24 @@ jobs:
         run: |
           version="1.0.${{ github.run_number }}"
 
-          # 🔹 GITHUB_ENV:
-          # Hace disponible VERSION para los siguientes steps
+          # GITHUB_ENV: disponible en los siguientes steps del mismo job
           echo "VERSION_ENV=$version" >> $GITHUB_ENV
 
-          # 🔹 GITHUB_OUTPUT:
-          # Permite que este valor pueda salir del job
+          # GITHUB_OUTPUT: output del step, usado por otros jobs
           echo "VERSION_OUTPUT=$version" >> $GITHUB_OUTPUT
 
       - name: Usar variable dentro del mismo job
         run: |
-          # 🔹 Uso de variable creada con GITHUB_ENV
           echo "Building $APP_NAME version $VERSION_ENV"
-          echo "Environment: ${{ inputs.environment }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
 
   deploy:
     runs-on: ubuntu-latest
-    needs: build                           # 🔹 NEEDS: depende del job build
+    needs: build
 
     steps:
       - name: Deploy
         run: |
-          # 🔹 NO funciona $VERSION_ENV aquí (porque era GITHUB_ENV del job build)
-
-          # 🔹 Se usa el output expuesto por el job build
+          # No funciona $VERSION_ENV aquí, solo en build
           echo "Deploying version ${{ needs.build.outputs.VERSION_OUTPUT }}"
-          echo "To environment: ${{ inputs.environment }}"
+          echo "To environment: ${{ github.event.inputs.environment }}"
