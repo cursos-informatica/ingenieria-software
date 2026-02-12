@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      version: ${{ steps.set_version.outputs.version }}
+      VERSION_OUTPUT: ${{ steps.set_version.outputs.version }}
       # 🔹 OUTPUT (job): expone la versión hacia otros jobs
 
     steps:
@@ -31,7 +31,7 @@ jobs:
 
           # 🔹 GITHUB_OUTPUT:
           # Permite que este valor pueda salir del job
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "VERSION_OUTPUT=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Usar variable dentro del mismo job
         run: |
